@@ -1,0 +1,10 @@
+{
+  "description": "This mobile-first website facilitates registration and information for the GUS Muslimah Business Summit 2.0, offering users event details, ticket purchasing, and partner opportunities.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
