@@ -60,7 +60,7 @@ const toBase64 = (blob: Blob) =>
 
 async function compressImage(
   file: File,
-): Promise<{ blob: Blob name: string mime: string }> {
+): Promise<{ blob: Blob; name: string; mime: string }> {
   const bmp = await createImageBitmap(file)
   const scale = Math.min(1, 1600 / Math.max(bmp.width, bmp.height))
   const c = document.createElement("canvas")
@@ -343,7 +343,7 @@ export default function Register() {
         headers: { "Content-Type": "text/plain;charset=utf-8" },
         body: JSON.stringify(body),
       })
-      const data: { ok: boolean ticketId?: string error?: string } =
+      const data: { ok: boolean; ticketId?: string; error?: string } =
         await res.json()
       if (!data.ok || !data.ticketId)
         throw new Error(data.error || "Something went wrong.")

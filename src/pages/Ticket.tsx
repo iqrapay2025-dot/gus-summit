@@ -4,7 +4,8 @@ import QRCode from "qrcode"
 import { toPng } from "html-to-image"
 import { Download } from "lucide-react"
 import { Container, Logo, LinkButton, Button } from "../components/ui"
-import { EVENT } from "../data"
+import { CONTACT, EVENT } from "../data"
+import { WhatsAppIcon } from "../components/ui"
 
 type T = {
   ticketId: string
@@ -155,6 +156,20 @@ export default function Ticket() {
             </div>
             <div className="h-2 bg-gus-green" />
           </div>
+        </div>
+        <div className="mt-5 text-center">
+          <a
+            href={CONTACT.whatsappGroup}
+            target="_blank"
+            rel="noopener"
+            className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3 font-display font-semibold text-black transition hover:bg-[#20bd5b]"
+          >
+            <WhatsAppIcon className="h-5 w-5" aria-hidden />
+            Join our WhatsApp group for updates
+          </a>
+          <p className="mt-2 text-sm text-black/70">
+            Get the date, venue and announcements first
+          </p>
         </div>
         <p className="mt-6 text-center text-sm leading-relaxed">
           A copy has been sent to your email. Your payment receipt is being

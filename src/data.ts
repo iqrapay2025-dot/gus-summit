@@ -30,6 +30,8 @@ export const EVENT = {
 
 export const CONTACT = {
   whatsapp: "https://wa.me/2349071107564",
+  whatsappGroup:
+    "https://chat.whatsapp.com/FvzkDOmdTKfHdbwfedTDW3?s=cl&p=a&ilr=4",
   whatsappLabel: "+234 (0) 907 110 7564",
   email: "globalunitedsisters2025@gmail.com",
   instagram: "https://www.instagram.com/global_united_sisters/",

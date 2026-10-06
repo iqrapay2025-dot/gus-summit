@@ -11,13 +11,13 @@ import { CONTACT } from "../data"
 export default function Contact() {
   const items = [
     {
-      t: "WhatsApp",
-      d: CONTACT.whatsappLabel,
-      href: CONTACT.whatsapp,
+      t: "WhatsApp group",
+      d: "Get summit announcements and updates",
+      href: CONTACT.whatsappGroup,
       Icon: WhatsAppIcon,
       card: "bg-gus-mint",
       badge: "bg-gus-green",
-      cta: "Chat with us",
+      cta: "Join our WhatsApp group",
     },
     {
       t: "Email",
@@ -110,7 +110,7 @@ export default function Contact() {
               <ExtButton
                 href={href}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener"
                 variant="dark"
                 className="mt-auto"
               >

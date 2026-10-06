@@ -56,7 +56,7 @@ export function LinkButton({
   variant = "primary",
   className = "",
   ...p
-}: { to: string variant?: V } & Omit<ComponentProps<typeof Link>, "to">) {
+}: { to: string; variant?: V } & Omit<ComponentProps<typeof Link>, "to">) {
   return (
     <Link
       to={to}

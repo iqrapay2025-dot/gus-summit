@@ -9,8 +9,9 @@ import {
   PartnersStrip,
   CtaBand,
 } from "../components/sections"
-import { EVENT } from "../data"
+import { CONTACT, EVENT } from "../data"
 import { HeroCarousel } from "../components/HeroCarousel"
+import { WhatsAppIcon } from "../components/ui"
 
 export default function Home() {
   return (
@@ -156,6 +157,22 @@ export default function Home() {
       <PackagesPreview />
       <Testimonials />
       <PartnersStrip />
+      <section className="bg-gus-mint py-4">
+        <Container className="flex flex-col items-center justify-between gap-3 text-center sm:flex-row sm:text-left">
+          <p className="font-display font-semibold text-gus-deep">
+            Get the date, venue and announcements first
+          </p>
+          <a
+            href={CONTACT.whatsappGroup}
+            target="_blank"
+            rel="noopener"
+            className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2 font-display font-semibold text-black transition hover:bg-[#20bd5b]"
+          >
+            <WhatsAppIcon className="h-5 w-5" aria-hidden />
+            Join our WhatsApp group
+          </a>
+        </Container>
+      </section>
       <CtaBand />
     </>
   )

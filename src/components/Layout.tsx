@@ -166,10 +166,10 @@ export function Layout() {
                 <InstagramIcon className="h-6 w-6" />
               </a>
               <a
-                href={CONTACT.whatsapp}
+                href={CONTACT.whatsappGroup}
                 target="_blank"
-                rel="noreferrer"
-                aria-label="GUS on WhatsApp"
+                rel="noopener"
+                aria-label="Join the GUS WhatsApp group"
                 className="grid h-12 w-12 place-items-center rounded-full bg-white/10 hover:bg-gus-green"
               >
                 <WhatsAppIcon className="h-6 w-6" />
