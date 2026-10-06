@@ -178,7 +178,7 @@ export function Layout() {
           </div>
         </Container>
         <div className="border-t border-white/10 py-5 text-center text-sm text-white/70">
-          Made with love for the sake of Allah 🤍 · © 2026 Global United Sisters
+          © 2026 Global United Sisters
         </div>
       </footer>
     </>
