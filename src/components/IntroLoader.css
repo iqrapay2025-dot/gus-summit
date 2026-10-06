@@ -1,0 +1,247 @@
+.gus-intro {
+  position: fixed;
+  z-index: 10000;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #fff;
+  color: #111;
+}
+
+.gus-intro__row {
+  display: flex;
+  width: max-content;
+  max-width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+
+.gus-intro__mark-enter,
+.gus-intro__mark-spin {
+  display: block;
+  width: 72px;
+  height: 72px;
+  flex: 0 0 auto;
+}
+
+.gus-intro__mark-enter {
+  opacity: 0;
+  animation: gus-intro-mark-enter 450ms ease-out forwards;
+}
+
+.gus-intro__mark-spin {
+  animation: gus-intro-mark-spin 1100ms ease-in-out 450ms both;
+}
+
+.gus-intro__copy {
+  width: 0;
+  flex: 0 0 auto;
+  overflow: hidden;
+  white-space: nowrap;
+  animation: gus-intro-write 1200ms ease-out 1550ms forwards;
+}
+
+.gus-intro__title {
+  display: block;
+  width: max-content;
+  color: #2f7a2b;
+  font-family: var(--font-display), sans-serif;
+  font-size: 20px;
+  font-weight: 800;
+  line-height: 1;
+  transform: scaleX(0.92);
+  transform-origin: left center;
+  white-space: nowrap;
+  clip-path: inset(0 100% 0 0);
+  animation: gus-intro-type 1200ms steps(21, end) 1550ms forwards;
+}
+
+.gus-intro__tagline {
+  display: block;
+  width: max-content;
+  margin-top: 8px;
+  color: #111;
+  font-family: var(--font-accent), sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.3;
+  opacity: 0;
+  white-space: nowrap;
+  animation: gus-intro-tagline-in 200ms ease-out 2700ms forwards;
+}
+
+.gus-intro__accent {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: #ff5a14;
+  transform: scaleX(0);
+  transform-origin: left;
+  animation: gus-intro-accent 3300ms linear forwards;
+}
+
+.gus-intro--exiting {
+  pointer-events: none;
+  animation: gus-intro-exit 350ms ease-in forwards;
+}
+
+@keyframes gus-intro-mark-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.72);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes gus-intro-mark-spin {
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+@keyframes gus-intro-write {
+  to {
+    width: min(238px, calc(100vw - 94px));
+  }
+}
+
+@keyframes gus-intro-type {
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes gus-intro-tagline-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes gus-intro-accent {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes gus-intro-exit {
+  to {
+    opacity: 0;
+    transform: translateY(-16px);
+    visibility: hidden;
+  }
+}
+
+@media (min-width: 640px) {
+  .gus-intro__mark-enter,
+  .gus-intro__mark-spin {
+    width: 112px;
+    height: 112px;
+  }
+
+  .gus-intro__row {
+    gap: 20px;
+  }
+
+  .gus-intro__copy {
+    animation-name: gus-intro-write-desktop;
+  }
+
+  .gus-intro__title {
+    font-size: 34px;
+  }
+
+  .gus-intro__tagline {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 359px) {
+  .gus-intro__row {
+    gap: 8px;
+  }
+
+  .gus-intro__title {
+    font-size: 18px;
+  }
+
+  .gus-intro__copy {
+    animation-name: gus-intro-write-compact;
+  }
+}
+
+@keyframes gus-intro-write-desktop {
+  to {
+    width: min(390px, calc(100vw - 180px));
+  }
+}
+
+@keyframes gus-intro-write-compact {
+  to {
+    width: min(220px, calc(100vw - 84px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gus-intro__mark-enter {
+    animation: gus-intro-mark-enter 1s ease-out both;
+  }
+
+  .gus-intro__mark-spin {
+    animation: none;
+  }
+
+  .gus-intro__copy {
+    width: min(238px, calc(100vw - 94px));
+    animation: gus-intro-mark-enter 1s ease-out both;
+  }
+
+  .gus-intro__title {
+    clip-path: none;
+    animation: none;
+  }
+
+  .gus-intro__accent {
+    transform: scaleX(1);
+    animation: none;
+  }
+
+  .gus-intro__tagline {
+    opacity: 1;
+    animation: none;
+  }
+
+  .gus-intro--exiting {
+    animation-name: gus-intro-reduced-exit;
+  }
+}
+
+@media (min-width: 640px) and (prefers-reduced-motion: reduce) {
+  .gus-intro__copy {
+    width: min(390px, calc(100vw - 180px));
+  }
+}
+
+@media (max-width: 359px) and (prefers-reduced-motion: reduce) {
+  .gus-intro__copy {
+    width: min(220px, calc(100vw - 84px));
+  }
+}
+
+@keyframes gus-intro-reduced-exit {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
