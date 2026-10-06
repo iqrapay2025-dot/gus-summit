@@ -10,6 +10,7 @@
     "format": "oxfmt"
   },
   "dependencies": {
+    "@vercel/analytics": "^2.0.1",
     "html-to-image": "^1.11.13",
     "lucide-react": "^1.52.0",
     "qrcode": "^1.5.4",
