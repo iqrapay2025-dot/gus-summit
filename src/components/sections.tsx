@@ -226,9 +226,15 @@ const PARTNERS = [
 
 import before from "../imports/before.jpg"
 import bish from "../imports/bish.jpg"
+import blissHaven from "../imports/bliss haven.jpg"
 import bolan from "../imports/bolan.jpg"
 import deejah from "../imports/deejah.jpg"
+import gentle from "../imports/gentle.jpg"
+import modesty from "../imports/modesty.jpg"
 import mujaahidah from "../imports/mujaahidah.jpg"
+import scentique from "../imports/Scentique.jpg"
+import tastyTales from "../imports/tastytales.jpg"
+import tawakkul from "../imports/tawakkul.jpg"
 import vantage from "../imports/vantage.jpg"
 import yussrah from "../imports/yussrah.jpg"
 
@@ -237,17 +243,74 @@ const NAMED_PARTNERS = [
     name: "Before You Fall in Love",
     logo: before,
     fit: "object-cover object-[50%_55%]",
+    href: "https://wa.me/message/GPUXPD4KGZSIO1",
   },
-  { name: "Bish Creatives", logo: bish, fit: "object-cover scale-[1.6]" },
-  { name: "Bolan's Bites", logo: bolan, fit: "object-contain" },
-  { name: "Deejah's Kitchen", logo: deejah, fit: "object-contain" },
-  { name: "Mujaahidaj Consulting", logo: mujaahidah, fit: "object-contain" },
+  {
+    name: "Bish Creative",
+    logo: bish,
+    fit: "object-cover scale-[1.6]",
+    href: "https://wa.me/2349136373167",
+  },
+  {
+    name: "Bliss Haven",
+    logo: blissHaven,
+    fit: "object-contain",
+    href: "https://bit.ly/Bliss_Haven",
+  },
+  {
+    name: "Bolan's Bites",
+    logo: bolan,
+    fit: "object-contain",
+    href: "https://wa.me/2349044100543",
+  },
+  {
+    name: "Deejah's Kitchen",
+    logo: deejah,
+    fit: "object-contain",
+    href: "https://wa.me/message/7JNU3BQSFY33E1",
+  },
+  {
+    name: "The Gentle Crochet",
+    logo: gentle,
+    fit: "object-contain",
+    href: "https://wa.me/message/X6N5AYRGT7VRP1",
+  },
+  {
+    name: "Modesty with Yusroh",
+    logo: modesty,
+    fit: "object-contain",
+    href: "https://wa.me/2347065964448",
+  },
+  {
+    name: "Mujaahidah Consulting",
+    logo: mujaahidah,
+    fit: "object-contain",
+    href: "https://shorturl.at/e7yGd",
+  },
+  { name: "Scentique", logo: scentique, fit: "object-contain" },
+  {
+    name: "Tasty Tales",
+    logo: tastyTales,
+    fit: "object-contain",
+    href: "https://wa.link/krt0s5",
+  },
+  {
+    name: "Tawakkul",
+    logo: tawakkul,
+    fit: "object-contain",
+    href: "https://wa.link/ymardk",
+  },
   {
     name: "Vantage Health and Wellness Hub",
     logo: vantage,
     fit: "object-contain",
   },
-  { name: "Yussrah", logo: yussrah, fit: "object-contain" },
+  {
+    name: "Yussrah",
+    logo: yussrah,
+    fit: "object-contain",
+    href: "https://wa.me/2347065964448",
+  },
 ]
 
 export function PartnersStrip({ link = true }: { link?: boolean }) {
@@ -279,7 +342,7 @@ export function PartnersStrip({ link = true }: { link?: boolean }) {
                     className="h-6 w-6 text-gus-yellow"
                     aria-hidden
                   />
-                  <span className="text-sm font-semibold">{p.label}</span>
+                  <span className="text-sm font-semibold">{p.name}</span>
                 </span>
               </a>
             </li>
@@ -293,11 +356,28 @@ export function PartnersStrip({ link = true }: { link?: boolean }) {
                 src={p.logo}
                 alt={p.name}
                 loading="lazy"
-                className={`h-full w-full ${p.fit}`}
+                className={`relative h-full w-full ${p.fit} transition duration-300 group-hover:scale-90 group-hover:opacity-20`}
               />
-              <span className="absolute inset-x-0 bottom-0 translate-y-full bg-gus-deep/90 px-2 py-1.5 text-center text-xs font-semibold text-white transition-transform duration-300 group-hover:translate-y-0">
-                {p.name}
+              <span className="absolute inset-0 z-10 flex translate-y-3 flex-col items-center justify-center gap-1 bg-gus-deep/90 text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                {p.href && (
+                  <ArrowUpRight
+                    className="h-6 w-6 text-gus-yellow"
+                    aria-hidden
+                  />
+                )}
+                <span className="text-center text-sm font-semibold">
+                  {p.name}
+                </span>
               </span>
+              {p.href && (
+                <a
+                  href={p.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Visit ${p.name}`}
+                  className="absolute inset-0 z-20 rounded-2xl focus-visible:outline focus-visible:outline-4 focus-visible:outline-gus-orange"
+                />
+              )}
             </li>
           ))}
         </ul>
