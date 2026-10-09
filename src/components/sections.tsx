@@ -304,6 +304,7 @@ const NAMED_PARTNERS = [
     name: "Vantage Health and Wellness Hub",
     logo: vantage,
     fit: "object-contain",
+    href: "https://wa.me/message/ZT4EDEW4OIUZF1",
   },
   {
     name: "Yussrah",
