@@ -22,7 +22,7 @@ export const SUBMIT_URL =
 
 export const EVENT = {
   name: "GUS Muslimah Business Summit 2.0",
-  date: "Date: To Be Announced",
+  date: "Date: 21st, November, 2026",
   time: "Time: To Be Announced",
   venue: "Venue: To Be Announced",
   venueShort: "To Be Announced",
@@ -31,7 +31,7 @@ export const EVENT = {
 export const CONTACT = {
   whatsapp: "https://wa.me/2349071107564",
   whatsappGroup:
-    "https://chat.whatsapp.com/FvzkDOmdTKfHdbwfedTDW3?s=cl&p=a&ilr=4",
+    "https://chat.whatsapp.com/GfdrVPsEdns9uIfSsPoKmS?s=cl&p=a&mlu=4&ilr=4",
   whatsappLabel: "+234 (0) 907 110 7564",
   email: "globalunitedsisters2025@gmail.com",
   instagram: "https://www.instagram.com/global_united_sisters/",
