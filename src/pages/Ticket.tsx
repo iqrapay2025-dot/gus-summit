@@ -11,7 +11,6 @@ type T = {
   ticketId: string
   fullName: string
   package: string
-  meal: string
   frameWording: string
   colour: string
 }
@@ -69,10 +68,7 @@ export default function Ticket() {
       </Container>
     )
   }
-  const rows: [string, string][] = [
-    ["Package", t.package],
-    ["Meal", t.meal],
-  ]
+  const rows: [string, string][] = [["Package", t.package]]
   if (t.package === "Khayr") {
     rows.push(["Souvenir wording", t.frameWording])
     rows.push(["Frame colour", t.colour || "Standard"])

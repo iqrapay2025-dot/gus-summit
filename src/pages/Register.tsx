@@ -7,19 +7,15 @@ import {
   FileText,
   Loader2,
   Upload,
-  Utensils,
-  ChefHat,
-  Soup,
 } from "lucide-react"
 import { Container, Button } from "../components/ui"
-import { SUBMIT_URL, PACKAGES, MEALS, BANK, naira, type Pkg } from "../data"
+import { SUBMIT_URL, PACKAGES, BANK, naira, type Pkg } from "../data"
 
 type Form = {
   fullName: string
   phone: string
   email: string
   pkg: Pkg | ""
-  meal: string
   frameWording: string
   colourCustomization: "" | "Yes" | "No"
   colour: string
@@ -31,18 +27,16 @@ const empty: Form = {
   phone: "",
   email: "",
   pkg: "",
-  meal: "",
   frameWording: "",
   colourCustomization: "",
   colour: "",
   amountPaid: "",
   declared: false,
 }
-type StepId = "details" | "package" | "meal" | "souvenir" | "payment" | "review"
+type StepId = "details" | "package" | "souvenir" | "payment" | "review"
 const LABEL: Record<StepId, string> = {
   details: "Details",
   package: "Package",
-  meal: "Meal",
   souvenir: "Souvenir",
   payment: "Payment",
   review: "Review",
@@ -204,8 +198,8 @@ export default function Register() {
   const steps = useMemo<StepId[]>(
     () =>
       f.pkg === "Khayr"
-        ? ["details", "package", "meal", "souvenir", "payment", "review"]
-        : ["details", "package", "meal", "payment", "review"],
+        ? ["details", "package", "souvenir", "payment", "review"]
+        : ["details", "package", "payment", "review"],
     [f.pkg],
   )
   const step = steps[Math.min(idx, steps.length - 1)]
@@ -227,7 +221,6 @@ export default function Register() {
         e.email = "Enter a valid email. Your ticket will be sent here."
     }
     if (s === "package" && !f.pkg) e.pkg = "Please choose a package."
-    if (s === "meal" && !f.meal) e.meal = "Please choose a meal."
     if (s === "souvenir") {
       if (!f.frameWording.trim())
         e.frameWording = "Tell us what to write on your frame."
@@ -325,7 +318,6 @@ export default function Register() {
         phone: f.phone.trim(),
         email: f.email.trim(),
         package: f.pkg,
-        meal: f.meal,
         ...(khayr
           ? {
               frameWording: f.frameWording.trim(),
@@ -351,7 +343,6 @@ export default function Register() {
         ticketId: data.ticketId,
         fullName: body.fullName,
         package: f.pkg,
-        meal: f.meal,
         frameWording: khayr ? body.frameWording : "",
         colour: khayr && f.colourCustomization === "Yes" ? f.colour.trim() : "",
       }
@@ -378,11 +369,6 @@ export default function Register() {
       <dd className="text-right font-semibold">{v}</dd>
     </div>
   )
-  const mealIcons = [
-    <Utensils key="a" className="h-6 w-6" />,
-    <ChefHat key="b" className="h-6 w-6" />,
-    <Soup key="c" className="h-6 w-6" />,
-  ]
 
   return (
     <section className="bg-gus-cream py-10 sm:py-16">
@@ -527,32 +513,6 @@ export default function Register() {
                     className="text-sm font-semibold text-red-700"
                   >
                     {errs.pkg}
-                  </p>
-                )}
-              </fieldset>
-            )}
-
-            {step === "meal" && (
-              <fieldset className="space-y-3">
-                <legend className="mb-3 font-display text-2xl font-semibold text-gus-green">
-                  Pick your meal
-                </legend>
-                {MEALS.map((m, i) => (
-                  <RadioCard
-                    key={m}
-                    name="meal"
-                    checked={f.meal === m}
-                    onChange={() => set("meal", m)}
-                    title={m}
-                    icon={mealIcons[i]}
-                  />
-                ))}
-                {errs.meal && (
-                  <p
-                    role="alert"
-                    className="text-sm font-semibold text-red-700"
-                  >
-                    {errs.meal}
                   </p>
                 )}
               </fieldset>
@@ -759,7 +719,6 @@ export default function Register() {
                   {row("Phone", f.phone)}
                   {row("Email", f.email)}
                   {row("Package", `${f.pkg} (${naira(due)})`)}
-                  {row("Meal", f.meal)}
                   {f.pkg === "Khayr" && (
                     <>
                       {row("Frame wording", f.frameWording)}
@@ -786,8 +745,8 @@ export default function Register() {
                     />
                     <span className="text-sm leading-relaxed">
                       By submitting this form, I confirm that the information
-                      provided is accurate and that I have selected the package,
-                      meal option, and other preferences I intend to receive.
+                      provided is accurate and that I have selected the package
+                      and other preferences I intend to receive.
                       Please note that selections cannot be changed after
                       submission.
                     </span>
