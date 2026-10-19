@@ -9,11 +9,15 @@ import {
   PartnersStrip,
   CtaBand,
 } from "../components/sections"
-import { CONTACT, EVENT } from "../data"
+import { EVENT } from "../data"
 import { HeroCarousel } from "../components/HeroCarousel"
 import { WhatsAppIcon } from "../components/ui"
+import { useState } from "react"
+import { WhatsAppRegisterModal } from "../components/WhatsAppRegisterModal"
 
 export default function Home() {
+  const [whatsappModalOpen, setWhatsAppModalOpen] = useState(false)
+
   return (
     <>
       <HeroCarousel>
@@ -162,18 +166,21 @@ export default function Home() {
           <p className="font-display font-semibold text-gus-deep">
             Get the date, venue and announcements first
           </p>
-          <a
-            href={CONTACT.whatsappGroup}
-            target="_blank"
-            rel="noopener"
+          <button
+            type="button"
+            onClick={() => setWhatsAppModalOpen(true)}
             className="inline-flex min-h-11 items-center justify-center gap-2 rounded-full bg-[#25D366] px-5 py-2 font-display font-semibold text-black transition hover:bg-[#20bd5b]"
           >
             <WhatsAppIcon className="h-5 w-5" aria-hidden />
             Join our WhatsApp group
-          </a>
+          </button>
         </Container>
       </section>
       <CtaBand />
+      <WhatsAppRegisterModal
+        open={whatsappModalOpen}
+        onClose={() => setWhatsAppModalOpen(false)}
+      />
     </>
   )
 }

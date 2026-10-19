@@ -3,12 +3,16 @@ import {
   Container,
   SectionHeading,
   ExtButton,
+  Button,
   InstagramIcon,
   WhatsAppIcon,
 } from "../components/ui"
 import { CONTACT } from "../data"
+import { WhatsAppRegisterModal } from "../components/WhatsAppRegisterModal"
+import { useState } from "react"
 
 export default function Contact() {
+  const [whatsappModalOpen, setWhatsAppModalOpen] = useState(false)
   const items = [
     {
       t: "WhatsApp group",
@@ -39,7 +43,8 @@ export default function Contact() {
     },
   ]
   return (
-    <section className="bg-gus-cream py-16 sm:py-24">
+    <>
+      <section className="bg-gus-cream py-16 sm:py-24">
       <Container>
         <SectionHeading
           eyebrow="We'd love to hear from you"
@@ -107,19 +112,34 @@ export default function Contact() {
               </span>
               <h2 className="mt-4 font-display text-2xl font-semibold">{t}</h2>
               <p className="mb-6 mt-1 break-all">{d}</p>
-              <ExtButton
-                href={href}
-                target="_blank"
-                rel="noopener"
-                variant="dark"
-                className="mt-auto"
-              >
-                {cta}
-              </ExtButton>
+              {t === "WhatsApp group" ? (
+                <Button
+                  variant="dark"
+                  onClick={() => setWhatsAppModalOpen(true)}
+                  className="mt-auto"
+                >
+                  {cta}
+                </Button>
+              ) : (
+                <ExtButton
+                  href={href}
+                  target="_blank"
+                  rel="noopener"
+                  variant="dark"
+                  className="mt-auto"
+                >
+                  {cta}
+                </ExtButton>
+              )}
             </article>
           ))}
         </div>
       </Container>
     </section>
+    <WhatsAppRegisterModal
+      open={whatsappModalOpen}
+      onClose={() => setWhatsAppModalOpen(false)}
+    />
+    </>
   )
 }

@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet, useLocation } from "react-router"
 import { Menu, X, ArrowUp } from "lucide-react"
 import { Logo, LinkButton, Container, InstagramIcon, WhatsAppIcon } from "./ui"
 import { CONTACT } from "../data"
+import { WhatsAppRegisterModal } from "./WhatsAppRegisterModal"
 
 const links = [
   { to: "/", label: "Home" },
@@ -15,6 +16,7 @@ export function Layout() {
   const [open, setOpen] = useState(false)
   const { pathname } = useLocation()
   const [showTop, setShowTop] = useState(false)
+  const [whatsappModalOpen, setWhatsAppModalOpen] = useState(false)
   useEffect(() => {
     setOpen(false)
     window.scrollTo(0, 0)
@@ -165,15 +167,14 @@ export function Layout() {
               >
                 <InstagramIcon className="h-6 w-6" />
               </a>
-              <a
-                href={CONTACT.whatsappGroup}
-                target="_blank"
-                rel="noopener"
+              <button
+                type="button"
+                onClick={() => setWhatsAppModalOpen(true)}
                 aria-label="Join the GUS WhatsApp group"
                 className="grid h-12 w-12 place-items-center rounded-full bg-white/10 hover:bg-gus-green"
               >
                 <WhatsAppIcon className="h-6 w-6" />
-              </a>
+              </button>
             </div>
           </div>
         </Container>
@@ -181,6 +182,10 @@ export function Layout() {
           © 2026 Global United Sisters
         </div>
       </footer>
+      <WhatsAppRegisterModal
+        open={whatsappModalOpen}
+        onClose={() => setWhatsAppModalOpen(false)}
+      />
     </>
   )
 }
