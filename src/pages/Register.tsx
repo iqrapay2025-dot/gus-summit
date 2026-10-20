@@ -502,7 +502,7 @@ export default function Register() {
                     title={`${p.id} Package · ${naira(p.price)}`}
                     sub={
                       p.id === "Khayr"
-                        ? "Includes a personalized souvenir frame"
+                        ? "Includes full summit access + a meal + a personalized souvenir frame"
                         : "Full summit access and a meal"
                     }
                   />

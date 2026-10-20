@@ -62,7 +62,7 @@ export function PackagesPreview({ detailed = false }: { detailed?: boolean }) {
               Summit <span className="text-gus-green">packages</span>
             </>
           }
-          sub="Both packages include your choice of meal: Jollof Rice, Ofada Rice or Pounded Yam."
+          sub="Both packages include your meal of: Jollof Rice"
         />
         <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
           {PACKAGES.map((p) => (
