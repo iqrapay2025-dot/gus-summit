@@ -24,8 +24,8 @@ export const EVENT = {
   name: "GUS Muslimah Business Summit 2.0",
   date: "Date: 21st, November, 2026",
   time: "Time: To Be Announced",
-  venue: "Venue: To Be Announced",
-  venueShort: "To Be Announced",
+  venue: "Venue: Auditorium Basement, University of Ilorin",
+  venueShort: "Auditorium Basement, UIL",
 }
 
 export const CONTACT = {
