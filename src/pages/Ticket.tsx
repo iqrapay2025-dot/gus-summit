@@ -114,7 +114,7 @@ export default function Ticket() {
                 <dt className="text-xs font-semibold uppercase tracking-widest text-gus-green">
                   Date &amp; time
                 </dt>
-                <dd className="font-semibold">November 21, 2026 (time to be announced)</dd>
+                <dd className="font-semibold">November 21, 2026 (10:00AM)</dd>
               </div>
               <div>
                 <dt className="text-xs font-semibold uppercase tracking-widest text-gus-green">

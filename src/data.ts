@@ -23,7 +23,7 @@ export const SUBMIT_URL =
 export const EVENT = {
   name: "GUS Muslimah Business Summit 2.0",
   date: "Date: 21st, November, 2026",
-  time: "Time: To Be Announced",
+  time: "Time: 10:00AM",
   venue: "Venue: Auditorium Basement, University of Ilorin",
   venueShort: "Auditorium Basement, UIL",
 }
