@@ -9,13 +9,14 @@ import {
   Upload,
 } from "lucide-react"
 import { Container, Button } from "../components/ui"
-import { SUBMIT_URL, PACKAGES, BANK, naira, type Pkg } from "../data"
+import { SUBMIT_URL, PACKAGES, BANK, DRINKS, naira, type Pkg } from "../data"
 
 type Form = {
   fullName: string
   phone: string
   email: string
   pkg: Pkg | ""
+  drink: "" | "Tigernut" | "Zobo"
   frameWording: string
   colourCustomization: "" | "Yes" | "No"
   colour: string
@@ -27,6 +28,7 @@ const empty: Form = {
   phone: "",
   email: "",
   pkg: "",
+  drink: "",
   frameWording: "",
   colourCustomization: "",
   colour: "",
@@ -220,7 +222,10 @@ export default function Register() {
       if (!/^\S+@\S+\.\S+$/.test(f.email.trim()))
         e.email = "Enter a valid email. Your ticket will be sent here."
     }
-    if (s === "package" && !f.pkg) e.pkg = "Please choose a package."
+    if (s === "package") {
+      if (!f.pkg) e.pkg = "Please choose a package."
+      if (!f.drink) e.drink = "Please choose a drink."
+    }
     if (s === "souvenir") {
       if (!f.frameWording.trim())
         e.frameWording = "Tell us what to write on your frame."
@@ -318,6 +323,7 @@ export default function Register() {
         phone: f.phone.trim(),
         email: f.email.trim(),
         package: f.pkg,
+        drink: f.drink,
         ...(khayr
           ? {
               frameWording: f.frameWording.trim(),
@@ -343,6 +349,7 @@ export default function Register() {
         ticketId: data.ticketId,
         fullName: body.fullName,
         package: f.pkg,
+        drink: f.drink,
         frameWording: khayr ? body.frameWording : "",
         colour: khayr && f.colourCustomization === "Yes" ? f.colour.trim() : "",
       }
@@ -502,8 +509,8 @@ export default function Register() {
                     title={`${p.id} Package · ${naira(p.price)}`}
                     sub={
                       p.id === "Khayr"
-                        ? "Includes full summit access + a meal + a personalized souvenir frame"
-                        : "Full summit access and a meal"
+                        ? "Includes full summit access + a drink + a personalized souvenir frame"
+                        : "Full summit access and a drink"
                     }
                   />
                 ))}
@@ -513,6 +520,33 @@ export default function Register() {
                     className="text-sm font-semibold text-red-700"
                   >
                     {errs.pkg}
+                  </p>
+                )}
+              </fieldset>
+            )}
+
+            {step === "package" && (
+              <fieldset className="space-y-3">
+                <legend className="mb-3 font-display text-2xl font-semibold text-gus-green">
+                  Choose your drink
+                </legend>
+                <div className="grid grid-cols-2 gap-3">
+                  {DRINKS.map((d) => (
+                    <RadioCard
+                      key={d}
+                      name="drink"
+                      checked={f.drink === d}
+                      onChange={() => set("drink", d)}
+                      title={d}
+                    />
+                  ))}
+                </div>
+                {errs.drink && (
+                  <p
+                    role="alert"
+                    className="text-sm font-semibold text-red-700"
+                  >
+                    {errs.drink}
                   </p>
                 )}
               </fieldset>
@@ -719,6 +753,7 @@ export default function Register() {
                   {row("Phone", f.phone)}
                   {row("Email", f.email)}
                   {row("Package", `${f.pkg} (${naira(due)})`)}
+                  {row("Drink", f.drink)}
                   {f.pkg === "Khayr" && (
                     <>
                       {row("Frame wording", f.frameWording)}

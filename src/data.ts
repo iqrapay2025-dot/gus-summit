@@ -59,7 +59,7 @@ export const PACKAGES: {
     perks: [
       "Full summit access",
       "All sessions and pitch session",
-      "Meal of your choice",
+      "Drink of your choice (Tigernut or Zobo)",
       "Networking and partner exhibition",
       "Digital ticket by email",
     ],
@@ -75,13 +75,13 @@ export const PACKAGES: {
       "Personalized souvenir frame",
       "Your name or wording on the frame",
       "Optional colour customization",
-      "Meal of your choice",
+      "Drink of your choice (Tigernut or Zobo)",
     ],
     tint: "bg-gus-peach",
     accent: "bg-gus-orange text-white",
   },
 ]
-export const MEALS = ["Jollof Rice", "Ofada Rice", "Pounded Yam"]
+export const DRINKS = ["Tigernut", "Zobo"] as const
 export const naira = (n: number) => "₦" + n.toLocaleString("en-NG")
 
 export const EXPECT = [
