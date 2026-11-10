@@ -292,6 +292,7 @@ import saybah from "../imports/Saybah Bakes and Treats.jpg"
 import ggModest from "../imports/GG Modest Wears.jpg"
 import dejokeCraft from "../imports/Dejoke Craft.jpg"
 import ultimateUnique from "../imports/The Ultimate Unique Collection.jpg"
+import midahCrochet from "../imports/Midah Crochet.jpg"
 
 const NAMED_PARTNERS: Partner[] = [
   {
@@ -390,6 +391,12 @@ const NAMED_PARTNERS: Partner[] = [
     logo: ultimateUnique,
     fit: "object-contain",
     href: "https://wa.link/ffg9nn",
+  },
+  {
+    name: "Midah Crochet",
+    logo: midahCrochet,
+    fit: "object-contain",
+    href: "https://wa.link/av7vxu",
   },
 ]
 

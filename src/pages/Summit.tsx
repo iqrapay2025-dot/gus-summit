@@ -23,6 +23,7 @@ import {
   CtaBand,
 } from "../components/sections"
 import { EVENT, CONTACT } from "../data"
+import { PromoBanner } from "../components/PromoBanner"
 
 const PROGRAM = [
   {
@@ -62,11 +63,11 @@ function TimelineItem({
     <li className="relative flex gap-4 pb-8 last:pb-0 sm:gap-6">
       {!last && (
         <span
-          className="absolute bottom-0 left-[27px] top-14 w-0.5 bg-gus-orange/30 sm:left-[35px]"
+          className="absolute bottom-0 left-6.7 top-14 w-0.5 bg-gus-orange/30 sm:left-8.75"
           aria-hidden
         />
       )}
-      <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-gus-orange font-display text-sm font-semibold text-black sm:h-[72px] sm:w-[72px]">
+      <span className="grid h-14 w-14 shrink-0 place-items-center rounded-full bg-gus-orange font-display text-sm font-semibold text-black sm:h-18 sm:w-18">
         {time}
       </span>
       <div className="flex-1 rounded-2xl bg-white p-5 shadow-sm">
@@ -122,7 +123,7 @@ export function SpeakerCard({
           <h3 className="font-display text-xl font-bold leading-tight sm:text-2xl">
             {name}
           </h3>
-          <p className="break-words font-semibold text-gus-orange">{role}</p>
+          <p className="wrap-break-word font-semibold text-gus-orange">{role}</p>
         </div>
       </div>
       <ul className="mt-5 space-y-2 text-black/70">
@@ -182,6 +183,8 @@ export default function Summit() {
         </LinkButton>
       </PageHero>
 
+      <PromoBanner />
+
       <section className="py-14">
         <Container className="grid items-center gap-8 md:grid-cols-2">
           <Photo
@@ -189,7 +192,7 @@ export default function Summit() {
             alt="Sisters listening to a speaker at a GUS gathering"
             w={700}
             h={875}
-            className="mx-auto aspect-[4/5] w-full max-w-sm rounded-[40px] border-8 border-white shadow-xl md:-rotate-2"
+            className="mx-auto aspect-4/5 w-full max-w-sm rounded-[40px] border-8 border-white shadow-xl md:-rotate-2"
           />
           <div className="text-center md:text-left">
             <p className="font-accent text-sm font-semibold uppercase tracking-wider text-gus-orange">
@@ -260,7 +263,7 @@ export default function Summit() {
       <PartnersStrip link={false} />
       <section className="pb-16 sm:pb-24">
         <Container className="max-w-4xl">
-          <div className="overflow-hidden rounded-[32px] bg-gus-yellow">
+          <div className="overflow-hidden rounded-4xl bg-gus-yellow">
             <Photo
               id={IMG.phone}
               alt="A teacher leading a class while sisters take notes"
