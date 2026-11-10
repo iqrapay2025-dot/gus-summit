@@ -9,7 +9,15 @@ import {
   Upload,
 } from "lucide-react"
 import { Container, Button } from "../components/ui"
-import { SUBMIT_URL, PACKAGES, BANK, DRINKS, naira, type Pkg } from "../data"
+import {
+  SUBMIT_URL,
+  PACKAGES,
+  BANK,
+  DRINKS,
+  naira,
+  priceFor,
+  type Pkg,
+} from "../data"
 
 type Form = {
   fullName: string
@@ -132,7 +140,7 @@ function RadioCard({
 }) {
   return (
     <label
-      className={`relative flex min-h-[64px] cursor-pointer items-center gap-4 rounded-2xl border-2 p-4 transition focus-within:ring-4 focus-within:ring-gus-orange/30 ${
+      className={`relative flex min-h-16 cursor-pointer items-center gap-4 rounded-2xl border-2 p-4 transition focus-within:ring-4 focus-within:ring-gus-orange/30 ${
         checked
           ? "border-gus-orange bg-gus-peach"
           : "border-black/15 bg-white hover:border-gus-orange/60"
@@ -175,6 +183,8 @@ export default function Register() {
   const nav = useNavigate()
   const [params] = useSearchParams()
   const pre = params.get("package")
+  // The price is fixed when the form is opened, so it cannot change while she is paying
+  const [openedAt] = useState(() => Date.now())
   const [f, setF] = useState<Form>({
     ...empty,
     pkg: pre === "Nūr" || pre === "Khayr" ? pre : "",
@@ -205,8 +215,7 @@ export default function Register() {
     [f.pkg],
   )
   const step = steps[Math.min(idx, steps.length - 1)]
-  const pkg = PACKAGES.find((p) => p.id === f.pkg)
-  const due = pkg?.price ?? 0
+  const due = f.pkg ? priceFor(f.pkg, openedAt) : 0
   const set = <K extends keyof Form>(k: K, v: Form[K]) => {
     setF((s) => ({ ...s, [k]: v }))
     setErrs((e) => ({ ...e, [k]: "" }))
@@ -402,7 +411,7 @@ export default function Register() {
             aria-valuemax={steps.length}
           >
             <div
-              className="h-full rounded-full bg-gradient-to-r from-gus-orange to-gus-yellow transition-all duration-500"
+              className="h-full rounded-full bg-linear-to-r from-gus-orange to-gus-yellow transition-all duration-500"
               style={{ width: `${pct}%` }}
             />
           </div>
@@ -506,7 +515,11 @@ export default function Register() {
                       set("pkg", p.id)
                       if (idx >= 3) setIdx(2)
                     }}
-                    title={`${p.id} Package · ${naira(p.price)}`}
+                    title={`${p.id} Package · ${naira(priceFor(p.id, openedAt))}${
+                      priceFor(p.id, openedAt) < p.price
+                        ? ` (sale, was ${naira(p.price)})`
+                        : ""
+                    }`}
                     sub={
                       p.id === "Khayr"
                         ? "Includes full summit access + a drink + a personalized souvenir frame"
@@ -692,7 +705,7 @@ export default function Register() {
                   </label>
                   <label
                     htmlFor="receipt"
-                    className="flex min-h-[120px] cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl border-2 border-dashed border-gus-orange bg-gus-peach/50 p-4 text-center focus-within:ring-4 focus-within:ring-gus-orange/30 hover:bg-gus-peach"
+                    className="flex min-h-30 cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl border-2 border-dashed border-gus-orange bg-gus-peach/50 p-4 text-center focus-within:ring-4 focus-within:ring-gus-orange/30 hover:bg-gus-peach"
                   >
                     <Upload className="h-7 w-7 text-gus-orange" aria-hidden />
                     <span className="font-semibold">
@@ -816,7 +829,7 @@ export default function Register() {
                 type="submit"
                 disabled={busy || !valid}
                 aria-busy={busy}
-                className="flex-[2] disabled:cursor-not-allowed disabled:opacity-45"
+                className="flex-2 disabled:cursor-not-allowed disabled:opacity-45"
               >
                 {busy ? (
                   <>
@@ -830,7 +843,7 @@ export default function Register() {
               <Button
                 type="submit"
                 disabled={!valid}
-                className="flex-[2] disabled:cursor-not-allowed disabled:opacity-45"
+                className="flex-2 disabled:cursor-not-allowed disabled:opacity-45"
               >
                 Next
               </Button>

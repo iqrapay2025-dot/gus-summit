@@ -52,7 +52,7 @@ export default function Contact() {
           sub="Questions about registration, partnership or the summit? Reach out, sister."
         />
         <div
-          className="relative mb-8 flex h-52 w-full items-center justify-center gap-6 overflow-hidden rounded-[32px] bg-gradient-to-br from-gus-yellow via-gus-orange to-gus-orange-dark shadow-lg sm:h-72 sm:gap-12"
+          className="relative mb-8 flex h-52 w-full items-center justify-center gap-6 overflow-hidden rounded-4xl bg-linear-to-br from-gus-yellow via-gus-orange to-gus-orange-dark shadow-lg sm:h-72 sm:gap-12"
           role="img"
           aria-label="A mobile phone with chat messages"
         >
@@ -76,7 +76,7 @@ export default function Contact() {
             </span>
           </div>
           <div
-            className="relative h-[130%] w-32 shrink-0 translate-y-8 rotate-3 rounded-[2rem] border-[6px] border-gus-black bg-white p-2 shadow-2xl sm:w-40"
+            className="relative h-[130%] w-32 shrink-0 translate-y-8 rotate-3 rounded-4xl border-[6px] border-gus-black bg-white p-2 shadow-2xl sm:w-40"
             aria-hidden
           >
             <span className="mx-auto block h-1.5 w-10 rounded-full bg-gus-black/80" />

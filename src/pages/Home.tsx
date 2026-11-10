@@ -1,3 +1,4 @@
+import { PromoBanner } from "../components/PromoBanner"
 import gusLogo from "../assets/gus-logo.png"
 import { Calendar, MapPin, Clock, ArrowUpRight } from "lucide-react"
 import { Link } from "react-router"
@@ -21,7 +22,7 @@ export default function Home() {
   return (
     <>
       <HeroCarousel>
-        <Container className="flex min-h-[620px] flex-col justify-end pb-28 pt-24 sm:min-h-[720px] sm:pb-24">
+        <Container className="flex min-h-155 flex-col justify-end pb-28 pt-24 sm:min-h-180 sm:pb-24">
           <p className="fade-up w-fit rounded-full border border-white/40 bg-white/10 px-4 py-1.5 text-sm font-medium backdrop-blur">
             Theme: The Multifaceted Muslimah
           </p>
@@ -66,13 +67,14 @@ export default function Home() {
             })}
           </ul>
         </Container>
-      </HeroCarousel>
+               </HeroCarousel>
+         <PromoBanner />
 
       <section className="bg-[#fbf8f5] py-14 sm:py-20">
         <Container className="grid items-center gap-8 md:grid-cols-2 md:gap-14">
           <div className="relative" data-reveal>
             <div
-              className="relative grid aspect-[9/7] w-full place-items-center overflow-hidden rounded-[32px] bg-gradient-to-br from-gus-yellow via-gus-orange to-gus-orange-dark shadow-lg"
+              className="relative grid aspect-9/7 w-full place-items-center overflow-hidden rounded-4xl bg-linear-to-br from-gus-yellow via-gus-orange to-gus-orange-dark shadow-lg"
               role="img"
               aria-label="The GUS logo beside a question mark: who is GUS?"
             >
@@ -150,7 +152,7 @@ export default function Home() {
                 alt={alt}
                 w={500}
                 h={640}
-                className={`aspect-[4/5] w-full rounded-3xl object-center transition duration-500 hover:scale-[1.03] hover:rotate-1 ${
+                className={`aspect-4/5 w-full rounded-3xl object-center transition duration-500 hover:scale-[1.03] hover:rotate-1 ${
                   k % 2 ? "md:mt-8" : ""
                 }`}
               />

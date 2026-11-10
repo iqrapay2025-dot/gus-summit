@@ -9,7 +9,14 @@ import {
   ArrowUpRight,
 } from "lucide-react"
 import { Container, SectionHeading, LinkButton, Photo, IMG } from "./ui"
-import { EXPECT, PACKAGES, TESTIMONIALS, naira, DRINKS } from "../data"
+import {
+  EXPECT,
+  PACKAGES,
+  TESTIMONIALS,
+  naira,
+  DRINKS,
+  priceFor,
+} from "../data"
 
 export function ExpectGrid({ id }: { id?: string }) {
   return (
@@ -51,7 +58,18 @@ export function ExpectGrid({ id }: { id?: string }) {
   )
 }
 
+// Re-checks the time every 30 seconds so the sale price appears and ends on its own
+function useNow() {
+  const [now, setNow] = useState(() => Date.now())
+  useEffect(() => {
+    const t = setInterval(() => setNow(Date.now()), 30000)
+    return () => clearInterval(t)
+  }, [])
+  return now
+}
+
 export function PackagesPreview({ detailed = false }: { detailed?: boolean }) {
+  const now = useNow()
   return (
     <section className="bg-gus-cream py-16 sm:py-24">
       <Container>
@@ -65,7 +83,10 @@ export function PackagesPreview({ detailed = false }: { detailed?: boolean }) {
           sub="Both packages include a drink of your choice: Tigernut or Zobo"
         />
         <div className="mx-auto grid max-w-4xl gap-6 md:grid-cols-2">
-          {PACKAGES.map((p) => (
+          {PACKAGES.map((p) => {
+            const live = priceFor(p.id, now)
+            const onSale = live < p.price
+            return (
             <article
               key={p.id}
               className={`${p.tint} relative flex flex-col rounded-[28px] p-7 shadow-sm ${
@@ -82,8 +103,20 @@ export function PackagesPreview({ detailed = false }: { detailed?: boolean }) {
               >
                 {p.id} Package
               </span>
-              <p className="mt-4 font-display text-5xl font-semibold text-gus-orange">
-                {naira(p.price)}
+              {onSale && (
+                <span className="mt-4 w-fit rounded-full bg-gus-yellow px-3 py-1 font-accent text-sm font-semibold">
+                  Sale · today only, 10:00AM to 10:00PM
+                </span>
+              )}
+              <p
+                className={`${onSale ? "mt-2" : "mt-4"} font-display text-5xl font-semibold text-gus-orange`}
+              >
+                {naira(live)}
+                {onSale && (
+                  <span className="ml-3 text-2xl text-black/45 line-through">
+                    {naira(p.price)}
+                  </span>
+                )}
               </p>
               <p className="mt-2 text-black/75">{p.blurb}</p>
               {detailed && (
@@ -111,7 +144,8 @@ export function PackagesPreview({ detailed = false }: { detailed?: boolean }) {
                 Register for {p.id}
               </LinkButton>
             </article>
-          ))}
+            )
+          })}
         </div>
       </Container>
     </section>
@@ -151,7 +185,7 @@ export function Testimonials() {
           onFocus={() => setPaused(true)}
           onBlur={() => setPaused(false)}
         >
-          <div className="overflow-hidden rounded-[32px]">
+          <div className="overflow-hidden rounded-4xl">
             <div
               className="flex transition-transform duration-500"
               style={{ transform: `translateX(-${i * 100}%)` }}
@@ -164,7 +198,7 @@ export function Testimonials() {
                   role="group"
                   aria-label={`${k + 1} of ${n}`}
                 >
-                  <div className="flex min-h-[260px] flex-col justify-between rounded-[28px] bg-white p-7 shadow-md sm:p-10">
+                  <div className="flex min-h-65 flex-col justify-between rounded-[28px] bg-white p-7 shadow-md sm:p-10">
                     <Quote
                       className="h-10 w-10 fill-gus-orange text-gus-orange"
                       aria-hidden
@@ -215,7 +249,23 @@ export function Testimonials() {
   )
 }
 
-const PARTNERS = [
+type Partner = {
+  name: string
+  logo: string
+  fit?: string
+  href?: string
+  label?: string
+  badge?: string
+}
+
+const PARTNERS: Partner[] = [
+  {
+    name: "Terraverde Global Solutions LTD",
+    logo: terraverde,
+    href: "https://wa.me/qr/OE7LBKFR45D5C1",
+    label: "wa.me/qr/OE7LBKFR45D5C1",
+    badge: "Sponsor",
+  },
   {
     name: "IqraPay",
     logo: iqrapay,
@@ -237,8 +287,13 @@ import tastyTales from "../imports/tastytales.jpg"
 import tawakkul from "../imports/tawakkul.jpg"
 import vantage from "../imports/vantage.jpg"
 import yussrah from "../imports/yussrah.jpg"
+import terraverde from "../imports/Terraverde Global Solutions LTD.jpg"
+import saybah from "../imports/Saybah Bakes and Treats.jpg"
+import ggModest from "../imports/GG Modest Wears.jpg"
+import dejokeCraft from "../imports/Dejoke Craft.jpg"
+import ultimateUnique from "../imports/The Ultimate Unique Collection.jpg"
 
-const NAMED_PARTNERS = [
+const NAMED_PARTNERS: Partner[] = [
   {
     name: "Before You Fall in Love",
     logo: before,
@@ -312,6 +367,30 @@ const NAMED_PARTNERS = [
     fit: "object-contain",
     href: "https://wa.me/2347065964448",
   },
+  {
+    name: "Saybah",
+    logo: saybah,
+    fit: "object-contain",
+    href: "https://wa.link/rh4ob0",
+  },
+  {
+    name: "GG Modest Wears",
+    logo: ggModest,
+    fit: "object-contain",
+    href: "https://wa.me/message/2IFPSQNFIDPOK1",
+  },
+  {
+    name: "Dejoke Craft",
+    logo: dejokeCraft,
+    fit: "object-contain",
+    href: "https://wa.me/message/FFY2AP62WXATI1",
+  },
+  {
+    name: "Ultimate Unique Collection",
+    logo: ultimateUnique,
+    fit: "object-contain",
+    href: "https://wa.link/ffg9nn",
+  },
 ]
 
 export function PartnersStrip({ link = true }: { link?: boolean }) {
@@ -331,13 +410,18 @@ export function PartnersStrip({ link = true }: { link?: boolean }) {
                 target="_blank"
                 rel="noreferrer"
                 aria-label={`${p.name}, visit ${p.label}`}
-                className="group relative grid aspect-[3/2] place-items-center overflow-hidden rounded-2xl border border-black/10 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md before:absolute before:inset-0 before:translate-y-full before:bg-gus-deep/90 before:transition-transform before:duration-300 hover:before:translate-y-0 focus-visible:before:translate-y-0"
+                className={`group relative grid aspect-3/2 place-items-center overflow-hidden rounded-2xl bg-white p-4 shadow-sm transition hover:-translate-y-2 hover:shadow-lg ${p.badge ? "border-2 border-gus-yellow ring-4 ring-gus-yellow/20" : "border border-black/10"} before:absolute before:inset-0 before:translate-y-full before:bg-gus-deep/90 before:transition-transform before:duration-300 hover:before:translate-y-0 focus-visible:before:translate-y-0`}
               >
                 <img
                   src={p.logo}
                   alt={p.name}
                   className="relative max-h-full w-auto object-contain transition duration-300 group-hover:scale-90 group-hover:opacity-20"
                 />
+                {p.badge && (
+                  <span className="absolute top-2 left-2 z-20 inline-block bg-gus-yellow text-gus-black text-xs font-black uppercase px-2.5 py-0.5 rounded tracking-tighter shadow-sm">
+                    {p.badge}
+                  </span>
+                )}
                 <span className="absolute inset-0 z-10 flex translate-y-3 flex-col items-center justify-center gap-1 text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
                   <ArrowUpRight
                     className="h-6 w-6 text-gus-yellow"
@@ -351,7 +435,7 @@ export function PartnersStrip({ link = true }: { link?: boolean }) {
           {NAMED_PARTNERS.map((p) => (
             <li
               key={p.name}
-              className="group relative aspect-[3/2] overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+              className={`group relative aspect-3/2 overflow-hidden rounded-2xl bg-white shadow-sm transition hover:-translate-y-2 hover:shadow-lg ${p.badge ? "border-2 border-gus-yellow ring-4 ring-gus-yellow/20" : "border border-black/10"}`}
             >
               <img
                 src={p.logo}
@@ -359,6 +443,11 @@ export function PartnersStrip({ link = true }: { link?: boolean }) {
                 loading="lazy"
                 className={`relative h-full w-full ${p.fit} transition duration-300 group-hover:scale-90 group-hover:opacity-20`}
               />
+              {p.badge && (
+                <span className="absolute top-2 left-2 z-20 inline-block bg-gus-yellow text-gus-black text-xs font-black uppercase px-2.5 py-0.5 rounded tracking-tighter shadow-sm">
+                  {p.badge}
+                </span>
+              )}
               <span className="absolute inset-0 z-10 flex translate-y-3 flex-col items-center justify-center gap-1 bg-gus-deep/90 text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
                 {p.href && (
                   <ArrowUpRight
@@ -376,7 +465,7 @@ export function PartnersStrip({ link = true }: { link?: boolean }) {
                   target="_blank"
                   rel="noreferrer"
                   aria-label={`Visit ${p.name}`}
-                  className="absolute inset-0 z-20 rounded-2xl focus-visible:outline focus-visible:outline-4 focus-visible:outline-gus-orange"
+                  className="absolute inset-0 z-20 rounded-2xl focus-visible:outline-4 focus-visible:outline-gus-orange"
                 />
               )}
             </li>
@@ -420,7 +509,7 @@ export function CtaBand() {
         <p className="mt-4 font-accent text-2xl text-gus-orange sm:text-3xl">
           Secure your seat.
         </p>
-        <LinkButton to="/register" className="mt-8 !bg-gus-yellow !text-black">
+        <LinkButton to="/register" className="mt-8 bg-gus-yellow! text-black!">
           Register Now
         </LinkButton>
       </Container>

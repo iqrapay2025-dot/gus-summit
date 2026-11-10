@@ -81,6 +81,21 @@ export const PACKAGES: {
     accent: "bg-gus-orange text-white",
   },
 ]
+// Nūr sale: ₦3,000 from 10:00AM to 10:00PM (Lagos time) on 11 November 2026.
+// To run another sale later, change price, start and end (keep the +01:00 offset).
+export const NUR_PROMO = {
+  price: 3000,
+  start: "2026-11-11T10:00:00+01:00",
+  end: "2026-11-11T22:00:00+01:00",
+}
+export const priceFor = (id: Pkg, at: number = Date.now()): number => {
+  const normal = PACKAGES.find((p) => p.id === id)?.price ?? 0
+  const onSale =
+    id === "Nūr" &&
+    at >= Date.parse(NUR_PROMO.start) &&
+    at < Date.parse(NUR_PROMO.end)
+  return onSale ? NUR_PROMO.price : normal
+}
 export const DRINKS = ["Tigernut", "Zobo"] as const
 export const naira = (n: number) => "₦" + n.toLocaleString("en-NG")
 
