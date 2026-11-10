@@ -6,7 +6,6 @@ import {
   ChevronRight,
   Quote,
   ImageIcon,
-  ArrowUpRight,
 } from "lucide-react"
 import { Container, SectionHeading, LinkButton, Photo, IMG } from "./ui"
 import {
@@ -401,6 +400,39 @@ const NAMED_PARTNERS: Partner[] = [
 ]
 
 export function PartnersStrip({ link = true }: { link?: boolean }) {
+  const all = [...PARTNERS, ...NAMED_PARTNERS];
+
+  function PartnerCard({ p }: { p: Partner }) {
+    return (
+      <a
+        href={p.href}
+        target="_blank"
+        rel="noreferrer"
+        aria-label={p.label ? `${p.name}, visit ${p.label}` : `Visit ${p.name}`}
+        className="flex-none w-[170px] sm:w-[200px] group relative overflow-hidden rounded-2xl bg-white border border-black/10 shadow-sm transition hover:shadow-md"
+      >
+        <div className="relative aspect-[4/3] overflow-hidden">
+          <img
+            src={p.logo}
+            alt={p.name}
+            loading="lazy"
+            className="absolute inset-0 h-full w-full object-contain transition duration-300 group-hover:scale-110"
+          />
+          {p.badge ? (
+            <span className="absolute top-2 left-2 z-20 inline-block bg-gus-yellow text-gus-black text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-tighter shadow-sm">
+              {p.badge}
+            </span>
+          ) : (
+            <span className="absolute top-2 left-2 z-20 inline-block bg-gus-yellow text-gus-black text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-tighter shadow-sm opacity-80">
+              Partner
+            </span>
+          )}
+        </div>
+        <p className="mt-2 text-center text-sm font-semibold leading-none">{p.name}</p>
+      </a>
+    );
+  }
+
   return (
     <section className="bg-[#fbf8f5] py-16 sm:py-20">
       <Container>
@@ -409,75 +441,24 @@ export function PartnersStrip({ link = true }: { link?: boolean }) {
           title="Our Partners"
           sub="Brands walking with us to empower the Muslimah."
         />
-        <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {PARTNERS.map((p) => (
-            <li key={p.name}>
-              <a
-                href={p.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`${p.name}, visit ${p.label}`}
-                className={`group relative grid aspect-3/2 place-items-center overflow-hidden rounded-2xl bg-white p-4 shadow-sm transition hover:-translate-y-2 hover:shadow-lg ${p.badge ? "border-2 border-gus-yellow ring-4 ring-gus-yellow/20" : "border border-black/10"} before:absolute before:inset-0 before:translate-y-full before:bg-gus-deep/90 before:transition-transform before:duration-300 hover:before:translate-y-0 focus-visible:before:translate-y-0`}
-              >
-                <img
-                  src={p.logo}
-                  alt={p.name}
-                  className="relative max-h-full w-auto object-contain transition duration-300 group-hover:scale-90 group-hover:opacity-20"
-                />
-                {p.badge && (
-                  <span className="absolute top-2 left-2 z-20 inline-block bg-gus-yellow text-gus-black text-xs font-black uppercase px-2.5 py-0.5 rounded tracking-tighter shadow-sm">
-                    {p.badge}
-                  </span>
-                )}
-                <span className="absolute inset-0 z-10 flex translate-y-3 flex-col items-center justify-center gap-1 text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
-                  <ArrowUpRight
-                    className="h-6 w-6 text-gus-yellow"
-                    aria-hidden
-                  />
-                  <span className="text-sm font-semibold">{p.name}</span>
-                </span>
-              </a>
-            </li>
-          ))}
-          {NAMED_PARTNERS.map((p) => (
-            <li
-              key={p.name}
-              className={`group relative aspect-3/2 overflow-hidden rounded-2xl bg-white shadow-sm transition hover:-translate-y-2 hover:shadow-lg ${p.badge ? "border-2 border-gus-yellow ring-4 ring-gus-yellow/20" : "border border-black/10"}`}
-            >
-              <img
-                src={p.logo}
-                alt={p.name}
-                loading="lazy"
-                className={`relative h-full w-full ${p.fit} transition duration-300 group-hover:scale-90 group-hover:opacity-20`}
-              />
-              {p.badge && (
-                <span className="absolute top-2 left-2 z-20 inline-block bg-gus-yellow text-gus-black text-xs font-black uppercase px-2.5 py-0.5 rounded tracking-tighter shadow-sm">
-                  {p.badge}
-                </span>
-              )}
-              <span className="absolute inset-0 z-10 flex translate-y-3 flex-col items-center justify-center gap-1 bg-gus-deep/90 text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
-                {p.href && (
-                  <ArrowUpRight
-                    className="h-6 w-6 text-gus-yellow"
-                    aria-hidden
-                  />
-                )}
-                <span className="text-center text-sm font-semibold">
-                  {p.name}
-                </span>
-              </span>
-              {p.href && (
-                <a
-                  href={p.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`Visit ${p.name}`}
-                  className="absolute inset-0 z-20 rounded-2xl focus-visible:outline-4 focus-visible:outline-gus-orange"
-                />
-              )}
-            </li>
-          ))}
-        </ul>
+        <div className="overflow-hidden relative">
+          <div className="flex gap-6 sm:gap-8 animate-marquee-left">
+            {all.map((p) => (
+              <PartnerCard key={p.name} p={p} />
+            ))}
+            {all.map((p) => (
+              <PartnerCard key={p.name + "-a"} p={p} />
+            ))}
+          </div>
+          <div className="flex gap-6 sm:gap-8 animate-marquee-right">
+            {all.map((p) => (
+              <PartnerCard key={p.name + "-b"} p={p} />
+            ))}
+            {all.map((p) => (
+              <PartnerCard key={p.name + "-c"} p={p} />
+            ))}
+          </div>
+        </div>
         {link && (
           <div className="mt-8 text-center">
             <LinkButton to="/summit#partners" variant="outline">
@@ -487,7 +468,7 @@ export function PartnersStrip({ link = true }: { link?: boolean }) {
         )}
       </Container>
     </section>
-  )
+  );
 }
 
 export function CtaBand() {

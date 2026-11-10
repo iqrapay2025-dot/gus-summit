@@ -43,4 +43,16 @@ body { font-family: var(--font-sans); color: #111; background: #fbf8f5; font-siz
 li:hover > span[class*='rounded-full']:first-of-type svg, article:hover > span[class*='rounded-full']:first-child svg { animation: wiggle .5s ease-in-out; }
 @keyframes drift { from { transform: translateX(-20px); } to { transform: translateX(20px); } }
 svg.fill-white { animation: drift 14s ease-in-out infinite alternate; }
+
+/* 2-line partner marquee — slow, steady scroll */
+@keyframes marquee-left {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes marquee-right {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0); }
+}
+.animate-marquee-left { animation: marquee-left 28s linear infinite; }
+.animate-marquee-right { animation: marquee-right 28s linear infinite; }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } svg.fill-white { animation: none; } }
