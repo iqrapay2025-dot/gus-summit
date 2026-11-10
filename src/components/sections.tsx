@@ -409,9 +409,9 @@ export function PartnersStrip({ link = true }: { link?: boolean }) {
         target="_blank"
         rel="noreferrer"
         aria-label={p.label ? `${p.name}, visit ${p.label}` : `Visit ${p.name}`}
-        className="flex-none w-[170px] sm:w-[200px] group relative overflow-hidden rounded-2xl bg-white border border-black/10 shadow-sm transition hover:shadow-md"
+        className="flex-none w-42.5 sm:w-50 group relative overflow-hidden rounded-2xl bg-white border border-black/10 shadow-sm transition hover:shadow-md"
       >
-        <div className="relative aspect-[4/3] overflow-hidden">
+        <div className="relative aspect-4/3 overflow-hidden">
           <img
             src={p.logo}
             alt={p.name}
