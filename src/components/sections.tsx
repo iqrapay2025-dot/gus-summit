@@ -6,7 +6,6 @@ import {
   ChevronRight,
   Quote,
   ImageIcon,
-  ArrowUpRight,
 } from "lucide-react"
 import { Container, SectionHeading, LinkButton, Photo, IMG } from "./ui"
 import {
@@ -284,6 +283,8 @@ import tastyTales from "../imports/tastytales.jpg"
 import tawakkul from "../imports/tawakkul.jpg"
 import vantage from "../imports/vantage.jpg"
 import yussrah from "../imports/yussrah.jpg"
+import temmiesBead from "../imports/Temmies beads.jpg"
+import glittersArts from "../imports/Glitters Arts and Design.jpg"
 
 const NAMED_PARTNERS = [
   {
@@ -317,6 +318,12 @@ const NAMED_PARTNERS = [
     href: "https://wa.me/message/7JNU3BQSFY33E1",
   },
   {
+    name: "Glitters Arts and Design",
+    logo: glittersArts,
+    fit: "object-contain",
+    href: "https://wa.me/message/3UZQDDZPJDS2A1",
+  },
+  {
     name: "The Gentle Crochet",
     logo: gentle,
     fit: "object-contain",
@@ -335,6 +342,12 @@ const NAMED_PARTNERS = [
     href: "https://shorturl.at/e7yGd",
   },
   { name: "Scentique", logo: scentique, fit: "object-contain" },
+  {
+    name: "Temmies Bead",
+    logo: temmiesBead,
+    fit: "object-contain",
+    href: "https://wa.link/00mj4h",
+  },
   {
     name: "Tasty Tales",
     logo: tastyTales,
@@ -361,74 +374,58 @@ const NAMED_PARTNERS = [
   },
 ]
 
-export function PartnersStrip({ link = true }: { link?: boolean }) {
+function PartnerTile({ p }: { p: { name: string; logo: string; href?: string } }) {
+  const image = (
+    <img
+      src={p.logo}
+      alt={p.name}
+      className="h-full w-full object-contain"
+      loading="lazy"
+    />
+  );
   return (
-    <section className="bg-[#fbf8f5] py-16 sm:py-20">
+    <div className="flex shrink-0 items-center justify-center w-40 h-24 rounded-xl border border-black/10 bg-white p-3 shadow-sm">
+      {p.href ? (
+        <a
+          href={p.href}
+          target="_blank"
+          rel="noreferrer"
+          aria-label={`Visit ${p.name}`}
+          className="block h-full w-full"
+        >
+          {image}
+        </a>
+      ) : (
+        image
+      )}
+    </div>
+  );
+}
+
+export function PartnersStrip({ link = true }: { link?: boolean }) {
+  const allPartners = [...PARTNERS, ...NAMED_PARTNERS];
+  const doubled = [...allPartners, ...allPartners];
+
+  return (
+    <section className="bg-[#fbf8f5] py-16 sm:py-20 overflow-hidden">
       <Container>
         <SectionHeading
           eyebrow="Walking with us"
           title="Our Partners"
           sub="Brands walking with us to empower the Muslimah."
         />
-        <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {PARTNERS.map((p) => (
-            <li key={p.name}>
-              <a
-                href={p.href}
-                target="_blank"
-                rel="noreferrer"
-                aria-label={`${p.name}, visit ${p.label}`}
-                className="group relative grid aspect-3/2 place-items-center overflow-hidden rounded-2xl border border-black/10 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md before:absolute before:inset-0 before:translate-y-full before:bg-gus-deep/90 before:transition-transform before:duration-300 hover:before:translate-y-0 focus-visible:before:translate-y-0"
-              >
-                <img
-                  src={p.logo}
-                  alt={p.name}
-                  className="relative max-h-full w-auto object-contain transition duration-300 group-hover:scale-90 group-hover:opacity-20"
-                />
-                <span className="absolute inset-0 z-10 flex translate-y-3 flex-col items-center justify-center gap-1 text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
-                  <ArrowUpRight
-                    className="h-6 w-6 text-gus-yellow"
-                    aria-hidden
-                  />
-                  <span className="text-sm font-semibold">{p.name}</span>
-                </span>
-              </a>
-            </li>
-          ))}
-          {NAMED_PARTNERS.map((p) => (
-            <li
-              key={p.name}
-              className="group relative aspect-3/2 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md"
-            >
-              <img
-                src={p.logo}
-                alt={p.name}
-                loading="lazy"
-                className={`relative h-full w-full ${p.fit} transition duration-300 group-hover:scale-90 group-hover:opacity-20`}
-              />
-              <span className="absolute inset-0 z-10 flex translate-y-3 flex-col items-center justify-center gap-1 bg-gus-deep/90 text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
-                {p.href && (
-                  <ArrowUpRight
-                    className="h-6 w-6 text-gus-yellow"
-                    aria-hidden
-                  />
-                )}
-                <span className="text-center text-sm font-semibold">
-                  {p.name}
-                </span>
-              </span>
-              {p.href && (
-                <a
-                  href={p.href}
-                  target="_blank"
-                  rel="noreferrer"
-                  aria-label={`Visit ${p.name}`}
-                  className="absolute inset-0 z-20 rounded-2xl focus-visible:outline-4 focus-visible:outline-gus-orange"
-                />
-              )}
-            </li>
-          ))}
-        </ul>
+        <div className="relative overflow-hidden">
+          <div className="marquee-line animate-marquee-left">
+            {doubled.map((p, i) => (
+              <PartnerTile key={i} p={p} />
+            ))}
+          </div>
+          <div className="marquee-line animate-marquee-right">
+            {doubled.map((p, i) => (
+              <PartnerTile key={i} p={p} />
+            ))}
+          </div>
+        </div>
         {link && (
           <div className="mt-8 text-center">
             <LinkButton to="/summit#partners" variant="outline">

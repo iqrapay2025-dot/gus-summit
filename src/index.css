@@ -55,4 +55,10 @@ svg.fill-white { animation: drift 14s ease-in-out infinite alternate; }
 }
 .animate-marquee-left { animation: marquee-left 28s linear infinite; }
 .animate-marquee-right { animation: marquee-right 28s linear infinite; }
+.marquee-line {
+  display: flex;
+  gap: 1.5rem;
+  will-change: transform;
+}
+.marquee-line:hover { animation-play-state: paused; }
 @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } svg.fill-white { animation: none; } }
