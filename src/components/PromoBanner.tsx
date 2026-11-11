@@ -1,11 +1,25 @@
 import { useEffect, useState } from "react"
 import { Zap } from "lucide-react"
 import { Container, LinkButton } from "./ui"
-import { NUR_PROMO, PACKAGES, naira } from "../data"
+import { PACKAGES, PROMOS, naira, timeLabel } from "../data"
 
-const START = Date.parse(NUR_PROMO.start)
-const END = Date.parse(NUR_PROMO.end)
-const NORMAL = PACKAGES.find((p) => p.id === "Nūr")?.price ?? 0
+// Every package that has a sale in data.ts (PROMOS)
+const ITEMS = PACKAGES.flatMap((p) => {
+  const promo = PROMOS[p.id]
+  return promo
+    ? [
+        {
+          id: p.id,
+          normal: p.price,
+          price: promo.price,
+          start: Date.parse(promo.start),
+          end: Date.parse(promo.end),
+          startIso: promo.start,
+          endIso: promo.end,
+        },
+      ]
+    : []
+})
 
 function useNow(ms: number) {
   const [now, setNow] = useState(() => Date.now())
@@ -27,27 +41,35 @@ function clock(ms: number) {
 }
 
 /**
- * Flash-sale banner for the Nūr ticket.
- * - Before the sale starts: announces it, with a countdown to the start.
- * - During the sale: shows the sale price, a countdown to the end and a button.
- * - After the sale ends: shows nothing.
+ * Flash-sale banner, driven by PROMOS in data.ts.
+ * - Sales that are on: shows each sale price, with a countdown to the end.
+ * - Sales still to start: announces them, with a countdown if none is on yet.
+ * - When every sale is over: shows nothing.
  */
 export function PromoBanner() {
   const now = useNow(1000)
-  if (now >= END) return null
+  const live = ITEMS.filter((i) => now >= i.start && now < i.end)
+  const upcoming = ITEMS.filter((i) => now < i.start)
+  if (!live.length && !upcoming.length) return null
 
-  const live = now >= START
-  const day = new Date(START).toLocaleDateString("en-NG", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    timeZone: "Africa/Lagos",
-  })
+  const target = live.length
+    ? Math.min(...live.map((i) => i.end))
+    : Math.min(...upcoming.map((i) => i.start))
+  const lastEnd = live.reduce((a, b) => (b.end > a.end ? b : a), live[0])
+  const day = upcoming.length
+    ? new Date(upcoming[0].start).toLocaleDateString("en-NG", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        timeZone: "Africa/Lagos",
+      })
+    : ""
+  const only = live.length === 1 ? live[0] : null
 
   return (
     <section
       role="region"
-      aria-label="Nūr ticket flash sale"
+      aria-label="Ticket flash sale"
       className="bg-linear-to-r from-gus-orange to-gus-yellow text-black"
     >
       <Container className="flex flex-col items-center gap-3 py-4 text-center sm:flex-row sm:justify-between sm:text-left">
@@ -60,43 +82,57 @@ export function PromoBanner() {
           </span>
           <div>
             <p className="font-accent text-lg font-semibold uppercase tracking-wide">
-              {live ? "Flash sale is on" : "Flash sale coming"}
+              {live.length ? "Flash sale is on" : "Flash sale coming"}
             </p>
-            <p className="font-medium">
-              {live ? (
-                <>
-                  Nūr ticket now <b>{naira(NUR_PROMO.price)}</b>{" "}
-                  <span className="line-through opacity-70">
-                    {naira(NORMAL)}
+            {live.length > 0 && (
+              <p className="font-medium">
+                {live.map((i, k) => (
+                  <span key={i.id}>
+                    {k > 0 && " · "}
+                    {i.id} <b>{naira(i.price)}</b>{" "}
+                    <span className="line-through opacity-70">
+                      {naira(i.normal)}
+                    </span>
                   </span>
-                  . Today only, 10:00AM to 10:00PM.
-                </>
-              ) : (
-                <>
-                  Nūr ticket drops to <b>{naira(NUR_PROMO.price)}</b> on {day},
-                  10:00AM to 10:00PM.
-                </>
-              )}
-            </p>
+                ))}
+                . Today only, until {timeLabel(lastEnd.endIso)}.
+              </p>
+            )}
+            {upcoming.length > 0 && (
+              <p className="font-medium">
+                {upcoming.map((i, k) => (
+                  <span key={i.id}>
+                    {k > 0 && " · "}
+                    {i.id} drops to <b>{naira(i.price)}</b>
+                  </span>
+                ))}
+                {live.length ? " at " : ` on ${day}, from `}
+                {timeLabel(upcoming[0].startIso)}.
+              </p>
+            )}
           </div>
         </div>
 
         <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-5">
           <p className="font-display text-xl font-semibold tabular-nums">
             <span className="sr-only">
-              {live ? "The sale ends soon." : "The sale starts soon."}
+              {live.length ? "The sale ends soon." : "The sale starts soon."}
             </span>
             <span aria-hidden>
-              {live ? "Ends in " : "Starts in "}
-              {clock(live ? END - now : START - now)}
+              {live.length ? "Ends in " : "Starts in "}
+              {clock(target - now)}
             </span>
           </p>
-          {live && (
+          {live.length > 0 && (
             <LinkButton
-              to={`/register?package=${encodeURIComponent("Nūr")}`}
+              to={
+                only
+                  ? `/register?package=${encodeURIComponent(only.id)}`
+                  : "/register"
+              }
               className="bg-black! text-white!"
             >
-              Get my {naira(NUR_PROMO.price)} ticket
+              {only ? `Get my ${naira(only.price)} ticket` : "Get my ticket"}
             </LinkButton>
           )}
         </div>

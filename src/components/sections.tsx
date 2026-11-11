@@ -6,6 +6,7 @@ import {
   ChevronRight,
   Quote,
   ImageIcon,
+  ArrowUpRight,
 } from "lucide-react"
 import { Container, SectionHeading, LinkButton, Photo, IMG } from "./ui"
 import {
@@ -15,6 +16,8 @@ import {
   naira,
   DRINKS,
   priceFor,
+  PROMOS,
+  timeLabel,
 } from "../data"
 
 export function ExpectGrid({ id }: { id?: string }) {
@@ -85,6 +88,7 @@ export function PackagesPreview({ detailed = false }: { detailed?: boolean }) {
           {PACKAGES.map((p) => {
             const live = priceFor(p.id, now)
             const onSale = live < p.price
+            const promo = PROMOS[p.id]
             return (
             <article
               key={p.id}
@@ -104,7 +108,9 @@ export function PackagesPreview({ detailed = false }: { detailed?: boolean }) {
               </span>
               {onSale && (
                 <span className="mt-4 w-fit rounded-full bg-gus-yellow px-3 py-1 font-accent text-sm font-semibold">
-                  Sale · today only, 10:00AM to 10:00PM
+                  Sale · today only
+                  {promo &&
+                    `, ${timeLabel(promo.start)} to ${timeLabel(promo.end)}`}
                 </span>
               )}
               <p
@@ -248,23 +254,7 @@ export function Testimonials() {
   )
 }
 
-type Partner = {
-  name: string
-  logo: string
-  fit?: string
-  href?: string
-  label?: string
-  badge?: string
-}
-
-const PARTNERS: Partner[] = [
-  {
-    name: "Terraverde Global Solutions LTD",
-    logo: terraverde,
-    href: "https://wa.me/qr/OE7LBKFR45D5C1",
-    label: "wa.me/qr/OE7LBKFR45D5C1",
-    badge: "Sponsor",
-  },
+const PARTNERS = [
   {
     name: "IqraPay",
     logo: iqrapay,
@@ -286,14 +276,8 @@ import tastyTales from "../imports/tastytales.jpg"
 import tawakkul from "../imports/tawakkul.jpg"
 import vantage from "../imports/vantage.jpg"
 import yussrah from "../imports/yussrah.jpg"
-import terraverde from "../imports/Terraverde Global Solutions LTD.jpg"
-import saybah from "../imports/Saybah Bakes and Treats.jpg"
-import ggModest from "../imports/GG Modest Wears.jpg"
-import dejokeCraft from "../imports/Dejoke Craft.jpg"
-import ultimateUnique from "../imports/The Ultimate Unique Collection.jpg"
-import midahCrochet from "../imports/Midah Crochet.jpg"
 
-const NAMED_PARTNERS: Partner[] = [
+const NAMED_PARTNERS = [
   {
     name: "Before You Fall in Love",
     logo: before,
@@ -367,72 +351,9 @@ const NAMED_PARTNERS: Partner[] = [
     fit: "object-contain",
     href: "https://wa.me/2347065964448",
   },
-  {
-    name: "Saybah",
-    logo: saybah,
-    fit: "object-contain",
-    href: "https://wa.link/rh4ob0",
-  },
-  {
-    name: "GG Modest Wears",
-    logo: ggModest,
-    fit: "object-contain",
-    href: "https://wa.me/message/2IFPSQNFIDPOK1",
-  },
-  {
-    name: "Dejoke Craft",
-    logo: dejokeCraft,
-    fit: "object-contain",
-    href: "https://wa.me/message/FFY2AP62WXATI1",
-  },
-  {
-    name: "Ultimate Unique Collection",
-    logo: ultimateUnique,
-    fit: "object-contain",
-    href: "https://wa.link/ffg9nn",
-  },
-  {
-    name: "Midah Crochet",
-    logo: midahCrochet,
-    fit: "object-contain",
-    href: "https://wa.link/av7vxu",
-  },
 ]
 
 export function PartnersStrip({ link = true }: { link?: boolean }) {
-  const all = [...PARTNERS, ...NAMED_PARTNERS];
-
-  function PartnerCard({ p }: { p: Partner }) {
-    return (
-      <a
-        href={p.href}
-        target="_blank"
-        rel="noreferrer"
-        aria-label={p.label ? `${p.name}, visit ${p.label}` : `Visit ${p.name}`}
-        className="flex-none w-42.5 sm:w-50 group relative overflow-hidden rounded-2xl bg-white border border-black/10 shadow-sm transition hover:shadow-md"
-      >
-        <div className="relative aspect-4/3 overflow-hidden">
-          <img
-            src={p.logo}
-            alt={p.name}
-            loading="lazy"
-            className="absolute inset-0 h-full w-full object-contain transition duration-300 group-hover:scale-110"
-          />
-          {p.badge ? (
-            <span className="absolute top-2 left-2 z-20 inline-block bg-gus-yellow text-gus-black text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-tighter shadow-sm">
-              {p.badge}
-            </span>
-          ) : (
-            <span className="absolute top-2 left-2 z-20 inline-block bg-gus-yellow text-gus-black text-[10px] font-black uppercase px-2 py-0.5 rounded tracking-tighter shadow-sm opacity-80">
-              Partner
-            </span>
-          )}
-        </div>
-        <p className="mt-2 text-center text-sm font-semibold leading-none">{p.name}</p>
-      </a>
-    );
-  }
-
   return (
     <section className="bg-[#fbf8f5] py-16 sm:py-20">
       <Container>
@@ -441,24 +362,65 @@ export function PartnersStrip({ link = true }: { link?: boolean }) {
           title="Our Partners"
           sub="Brands walking with us to empower the Muslimah."
         />
-        <div className="overflow-hidden relative">
-          <div className="flex gap-6 sm:gap-8 animate-marquee-left">
-            {all.map((p) => (
-              <PartnerCard key={p.name} p={p} />
-            ))}
-            {all.map((p) => (
-              <PartnerCard key={p.name + "-a"} p={p} />
-            ))}
-          </div>
-          <div className="flex gap-6 sm:gap-8 animate-marquee-right">
-            {all.map((p) => (
-              <PartnerCard key={p.name + "-b"} p={p} />
-            ))}
-            {all.map((p) => (
-              <PartnerCard key={p.name + "-c"} p={p} />
-            ))}
-          </div>
-        </div>
+        <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          {PARTNERS.map((p) => (
+            <li key={p.name}>
+              <a
+                href={p.href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={`${p.name}, visit ${p.label}`}
+                className="group relative grid aspect-3/2 place-items-center overflow-hidden rounded-2xl border border-black/10 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-md before:absolute before:inset-0 before:translate-y-full before:bg-gus-deep/90 before:transition-transform before:duration-300 hover:before:translate-y-0 focus-visible:before:translate-y-0"
+              >
+                <img
+                  src={p.logo}
+                  alt={p.name}
+                  className="relative max-h-full w-auto object-contain transition duration-300 group-hover:scale-90 group-hover:opacity-20"
+                />
+                <span className="absolute inset-0 z-10 flex translate-y-3 flex-col items-center justify-center gap-1 text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-visible:translate-y-0 group-focus-visible:opacity-100">
+                  <ArrowUpRight
+                    className="h-6 w-6 text-gus-yellow"
+                    aria-hidden
+                  />
+                  <span className="text-sm font-semibold">{p.name}</span>
+                </span>
+              </a>
+            </li>
+          ))}
+          {NAMED_PARTNERS.map((p) => (
+            <li
+              key={p.name}
+              className="group relative aspect-3/2 overflow-hidden rounded-2xl border border-black/10 bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md"
+            >
+              <img
+                src={p.logo}
+                alt={p.name}
+                loading="lazy"
+                className={`relative h-full w-full ${p.fit} transition duration-300 group-hover:scale-90 group-hover:opacity-20`}
+              />
+              <span className="absolute inset-0 z-10 flex translate-y-3 flex-col items-center justify-center gap-1 bg-gus-deep/90 text-white opacity-0 transition duration-300 group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
+                {p.href && (
+                  <ArrowUpRight
+                    className="h-6 w-6 text-gus-yellow"
+                    aria-hidden
+                  />
+                )}
+                <span className="text-center text-sm font-semibold">
+                  {p.name}
+                </span>
+              </span>
+              {p.href && (
+                <a
+                  href={p.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`Visit ${p.name}`}
+                  className="absolute inset-0 z-20 rounded-2xl focus-visible:outline-4 focus-visible:outline-gus-orange"
+                />
+              )}
+            </li>
+          ))}
+        </ul>
         {link && (
           <div className="mt-8 text-center">
             <LinkButton to="/summit#partners" variant="outline">
@@ -468,7 +430,7 @@ export function PartnersStrip({ link = true }: { link?: boolean }) {
         )}
       </Container>
     </section>
-  );
+  )
 }
 
 export function CtaBand() {
