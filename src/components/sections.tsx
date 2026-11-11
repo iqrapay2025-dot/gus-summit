@@ -89,6 +89,8 @@ export function PackagesPreview({ detailed = false }: { detailed?: boolean }) {
             const live = priceFor(p.id, now)
             const onSale = live < p.price
             const promo = PROMOS[p.id]
+            const upcoming =
+              !!promo && !onSale && now < Date.parse(promo.start)
             return (
             <article
               key={p.id}
@@ -113,8 +115,14 @@ export function PackagesPreview({ detailed = false }: { detailed?: boolean }) {
                     `, ${timeLabel(promo.start)} to ${timeLabel(promo.end)}`}
                 </span>
               )}
+              {upcoming && promo && (
+                <span className="mt-4 w-fit rounded-full bg-gus-yellow px-3 py-1 font-accent text-sm font-semibold">
+                  Flash sale today, {timeLabel(promo.start)} to{" "}
+                  {timeLabel(promo.end)} · {naira(promo.price)}
+                </span>
+              )}
               <p
-                className={`${onSale ? "mt-2" : "mt-4"} font-display text-5xl font-semibold text-gus-orange`}
+                className={`${onSale || upcoming ? "mt-2" : "mt-4"} font-display text-5xl font-semibold text-gus-orange`}
               >
                 {naira(live)}
                 {onSale && (

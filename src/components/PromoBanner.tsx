@@ -42,101 +42,92 @@ function clock(ms: number) {
 
 /**
  * Flash-sale banner, driven by PROMOS in data.ts.
- * - Sales that are on: shows each sale price, with a countdown to the end.
- * - Sales still to start: announces them, with a countdown if none is on yet.
- * - When every sale is over: shows nothing.
+ * One banner per package, side by side: Nūr (orange) and Khayr (black).
+ * Each banner shows its own price, the old price crossed out, and its own
+ * countdown. A sale that is over disappears; when all are over, nothing shows.
  */
 export function PromoBanner() {
   const now = useNow(1000)
-  const live = ITEMS.filter((i) => now >= i.start && now < i.end)
-  const upcoming = ITEMS.filter((i) => now < i.start)
-  if (!live.length && !upcoming.length) return null
-
-  const target = live.length
-    ? Math.min(...live.map((i) => i.end))
-    : Math.min(...upcoming.map((i) => i.start))
-  const lastEnd = live.reduce((a, b) => (b.end > a.end ? b : a), live[0])
-  const day = upcoming.length
-    ? new Date(upcoming[0].start).toLocaleDateString("en-NG", {
-        weekday: "long",
-        day: "numeric",
-        month: "long",
-        timeZone: "Africa/Lagos",
-      })
-    : ""
-  const only = live.length === 1 ? live[0] : null
+  const shown = ITEMS.filter((i) => now < i.end)
+  if (!shown.length) return null
 
   return (
-    <section
-      role="region"
-      aria-label="Ticket flash sale"
-      className="bg-linear-to-r from-gus-orange to-gus-yellow text-black"
-    >
-      <Container className="flex flex-col items-center gap-3 py-4 text-center sm:flex-row sm:justify-between sm:text-left">
-        <div className="flex items-center gap-3">
-          <span
-            className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-black text-gus-yellow motion-safe:animate-pulse"
-            aria-hidden
-          >
-            <Zap className="h-6 w-6" />
-          </span>
-          <div>
-            <p className="font-accent text-lg font-semibold uppercase tracking-wide">
-              {live.length ? "Flash sale is on" : "Flash sale coming"}
-            </p>
-            {live.length > 0 && (
-              <p className="font-medium">
-                {live.map((i, k) => (
-                  <span key={i.id}>
-                    {k > 0 && " · "}
-                    {i.id} <b>{naira(i.price)}</b>{" "}
-                    <span className="line-through opacity-70">
-                      {naira(i.normal)}
-                    </span>
-                  </span>
-                ))}
-                . Today only, until {timeLabel(lastEnd.endIso)}.
-              </p>
-            )}
-            {upcoming.length > 0 && (
-              <p className="font-medium">
-                {upcoming.map((i, k) => (
-                  <span key={i.id}>
-                    {k > 0 && " · "}
-                    {i.id} drops to <b>{naira(i.price)}</b>
-                  </span>
-                ))}
-                {live.length ? " at " : ` on ${day}, from `}
-                {timeLabel(upcoming[0].startIso)}.
-              </p>
-            )}
-          </div>
-        </div>
-
-        <div className="flex flex-col items-center gap-2 sm:flex-row sm:gap-5">
-          <p className="font-display text-xl font-semibold tabular-nums">
-            <span className="sr-only">
-              {live.length ? "The sale ends soon." : "The sale starts soon."}
-            </span>
-            <span aria-hidden>
-              {live.length ? "Ends in " : "Starts in "}
-              {clock(target - now)}
-            </span>
-          </p>
-          {live.length > 0 && (
-            <LinkButton
-              to={
-                only
-                  ? `/register?package=${encodeURIComponent(only.id)}`
-                  : "/register"
+    <section role="region" aria-label="Ticket flash sale">
+      <div
+        className={`grid ${shown.length > 1 ? "md:grid-cols-2" : ""}`}
+      >
+        {shown.map((i) => {
+          const live = now >= i.start
+          const dark = i.id === "Khayr"
+          return (
+            <div
+              key={i.id}
+              className={
+                dark
+                  ? "bg-black text-white"
+                  : "bg-linear-to-r from-gus-orange to-gus-yellow text-black"
               }
-              className="bg-black! text-white!"
             >
-              {only ? `Get my ${naira(only.price)} ticket` : "Get my ticket"}
-            </LinkButton>
-          )}
-        </div>
-      </Container>
+              <Container className="flex flex-col items-center gap-3 py-4 text-center sm:flex-row sm:justify-between sm:text-left">
+                <div className="flex items-center gap-3">
+                  <span
+                    className={`grid h-11 w-11 shrink-0 place-items-center rounded-full motion-safe:animate-pulse ${
+                      dark ? "bg-gus-yellow text-black" : "bg-black text-gus-yellow"
+                    }`}
+                    aria-hidden
+                  >
+                    <Zap className="h-6 w-6" />
+                  </span>
+                  <div>
+                    <p
+                      className={`font-accent text-lg font-semibold uppercase tracking-wide ${
+                        dark ? "text-gus-yellow" : ""
+                      }`}
+                    >
+                      {i.id} flash sale {live ? "is on" : "coming"}
+                    </p>
+                    <p className="font-medium">
+                      <b className="text-xl">{naira(i.price)}</b>{" "}
+                      <span className="line-through opacity-70">
+                        {naira(i.normal)}
+                      </span>{" "}
+                      · Save {naira(i.normal - i.price)}
+                    </p>
+                    <p className="text-sm opacity-80">
+                      Today only, {timeLabel(i.startIso)} to{" "}
+                      {timeLabel(i.endIso)}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex flex-col items-center gap-2">
+                  <p className="font-display text-xl font-semibold tabular-nums">
+                    <span className="sr-only">
+                      {live ? "The sale ends soon." : "The sale starts soon."}
+                    </span>
+                    <span aria-hidden>
+                      {live ? "Ends in " : "Starts in "}
+                      {clock((live ? i.end : i.start) - now)}
+                    </span>
+                  </p>
+                  {live && (
+                    <LinkButton
+                      to={`/register?package=${encodeURIComponent(i.id)}`}
+                      className={
+                        dark
+                          ? "bg-gus-yellow! text-black!"
+                          : "bg-black! text-white!"
+                      }
+                    >
+                      Get {i.id} {naira(i.price)}
+                    </LinkButton>
+                  )}
+                </div>
+              </Container>
+            </div>
+          )
+        })}
+      </div>
     </section>
   )
 }
