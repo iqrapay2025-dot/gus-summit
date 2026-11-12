@@ -82,19 +82,19 @@ export const PACKAGES: {
   },
 ]
 // Flash sales (Lagos time, +01:00 offset). To run another sale, edit the price, start and end.
-//   Nūr:   ₦3,000, 10:00AM to 10:00PM on 11 November 2026
-//   Khayr: ₦6,000, 12:00PM to 10:00PM on 11 November 2026
+//   Nūr:   ₦3,000, 10:00AM on 12 Nov to midnight (00:00 on 13 Nov) 2026
+//   Khayr: ₦6,000, same hours
 export type Promo = { price: number; start: string; end: string }
 export const PROMOS: Partial<Record<Pkg, Promo>> = {
   "Nūr": {
     price: 3000,
-    start: "2026-11-11T10:00:00+01:00",
-    end: "2026-11-11T22:00:00+01:00",
+    start: "2026-11-12T10:00:00+01:00",
+    end: "2026-11-13T00:00:00+01:00",
   },
   Khayr: {
     price: 6000,
-    start: "2026-11-11T12:00:00+01:00",
-    end: "2026-11-11T22:00:00+01:00",
+    start: "2026-11-12T10:00:00+01:00",
+    end: "2026-11-13T00:00:00+01:00",
   },
 }
 export const isOnSale = (id: Pkg, at: number = Date.now()): boolean => {
@@ -107,14 +107,16 @@ export const priceFor = (id: Pkg, at: number = Date.now()): number => {
   return PACKAGES.find((x) => x.id === id)?.price ?? 0
 }
 // Time of day in Lagos, e.g. "12:00PM"
-export const timeLabel = (iso: string): string =>
-  new Date(iso)
+export const timeLabel = (iso: string): string => {
+  const t = new Date(iso)
     .toLocaleTimeString("en-US", {
       hour: "numeric",
       minute: "2-digit",
       timeZone: "Africa/Lagos",
     })
     .replace(" ", "")
+  return t === "12:00AM" ? "midnight" : t
+}
 export const DRINKS = ["Tigernut", "Zobo"] as const
 export const naira = (n: number) => "₦" + n.toLocaleString("en-NG")
 
