@@ -82,14 +82,19 @@ export const PACKAGES: {
   },
 ]
 // Flash sales (Lagos time, +01:00 offset). To run another sale, edit the price, start and end.
-//   Nūr:   ₦3,000, 11:40AM to 11:50AM on 13 Nov 2026
-//   (Khayr's sale on 12 Nov has ended, so it is removed. Add a Khayr entry to run it again.)
+//   Nūr:   ₦3,000, 4:41PM to 5:30PM on 13 Nov 2026
+//   Khayr: ₦6,000, 4:41PM to 5:30PM on 13 Nov 2026
 export type Promo = { price: number; start: string; end: string }
 export const PROMOS: Partial<Record<Pkg, Promo>> = {
   "Nūr": {
     price: 3000,
     start: "2026-11-13T16:41:00+01:00",
-end: "2026-11-13T17:30:00+01:00",
+    end: "2026-11-13T18:00:00+01:00",
+  },
+  Khayr: {
+    price: 6000,
+    start: "2026-11-13T16:41:00+01:00",
+    end: "2026-11-13T18:00:00+01:00",
   },
 }
 export const isOnSale = (id: Pkg, at: number = Date.now()): boolean => {
