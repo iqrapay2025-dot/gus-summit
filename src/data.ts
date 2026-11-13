@@ -89,7 +89,7 @@ export const PROMOS: Partial<Record<Pkg, Promo>> = {
   "Nūr": {
     price: 3000,
     start: "2026-11-13T16:41:00+01:00",
-    end: "2026-11-13T18:30:00+01:00",
+    end: "2026-11-13T21:30:00+01:00",
   },
   Khayr: {
     price: 6000,
