@@ -89,7 +89,7 @@ export const PROMOS: Partial<Record<Pkg, Promo>> = {
   "Nūr": {
     price: 3000,
     start: "2026-11-13T16:41:00+01:00",
-end: "2026-11-13T16:55:00+01:00",
+end: "2026-11-13T17:30:00+01:00",
   },
 }
 export const isOnSale = (id: Pkg, at: number = Date.now()): boolean => {
