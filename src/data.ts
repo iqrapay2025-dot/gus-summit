@@ -20,6 +20,9 @@ import {
 export const SUBMIT_URL =
   "https://script.google.com/macros/s/AKfycbxXgTMU6ciptJza5osd32zpoy2EdLPwNJTtUQqH7eXDoQM3SlS2TW1g_Nzn9YXU8anY/exec"
 
+// Set to true to reopen registration (also set REGISTRATION_OPEN = true in the Apps Script and redeploy it)
+export const REGISTRATION_OPEN = false
+
 export const EVENT = {
   name: "GUS Muslimah Business Summit 2.0",
   date: "Date: 21st, November, 2026",

@@ -11,6 +11,8 @@ import {
 import { Container, Button } from "../components/ui"
 import {
   SUBMIT_URL,
+  REGISTRATION_OPEN,
+  CONTACT,
   PACKAGES,
   BANK,
   DRINKS,
@@ -179,7 +181,7 @@ function RadioCard({
   )
 }
 
-export default function Register() {
+function RegisterForm() {
   const nav = useNavigate()
   const [params] = useSearchParams()
   const pre = params.get("package")
@@ -872,4 +874,31 @@ export default function Register() {
       </Container>
     </section>
   )
+}
+
+export default function Register() {
+  if (!REGISTRATION_OPEN) {
+    return (
+      <section className="bg-gus-cream py-16 sm:py-24">
+        <Container className="max-w-2xl text-center">
+          <h1 className="font-display text-3xl font-semibold text-gus-orange sm:text-5xl">
+            Registration is now closed
+          </h1>
+          <p className="mt-4 text-lg">
+            Thank you for your interest in the GUS Muslimah Business Summit 2.0.
+            JazakAllahu khayran. For any questions, message us on WhatsApp.
+          </p>
+          <a
+            href={CONTACT.whatsapp}
+            target="_blank"
+            rel="noreferrer"
+            className="mt-8 inline-flex min-h-12 items-center justify-center rounded-full bg-gus-orange px-8 font-display font-semibold text-white"
+          >
+            Contact us
+          </a>
+        </Container>
+      </section>
+    )
+  }
+  return <RegisterForm />
 }
