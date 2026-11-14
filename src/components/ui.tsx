@@ -1,6 +1,7 @@
 import { Link } from "react-router"
 import type { ReactNode, ComponentProps } from "react"
 import logo from "../assets/gus-logo.png"
+import { REGISTRATION_OPEN } from "../data"
 
 export function Logo({
   dark = false,
@@ -55,14 +56,33 @@ export function LinkButton({
   to,
   variant = "primary",
   className = "",
+  children,
   ...p
 }: { to: string; variant?: V } & Omit<ComponentProps<typeof Link>, "to">) {
+  if (!REGISTRATION_OPEN && to.startsWith("/register")) {
+    // keep layout classes (width, margin, size) but drop colour classes
+    const layout = className
+      .split(/\s+/)
+      .filter((c) => c && !/^!?bg-/.test(c) && !/^!?text-(black|white)/.test(c))
+      .join(" ")
+    return (
+      <span
+        role="link"
+        aria-disabled="true"
+        className={`${base} ${layout} cursor-not-allowed bg-gray-300 text-gray-600`}
+      >
+        Registration closed
+      </span>
+    )
+  }
   return (
     <Link
       to={to}
       className={`${base} ${variants[variant]} ${className}`}
       {...p}
-    />
+    >
+      {children}
+    </Link>
   )
 }
 export function Button({

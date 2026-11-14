@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Link, NavLink, Outlet, useLocation } from "react-router"
 import { Menu, X, ArrowUp } from "lucide-react"
 import { Logo, LinkButton, Container, InstagramIcon, WhatsAppIcon } from "./ui"
-import { CONTACT } from "../data"
+import { CONTACT, REGISTRATION_OPEN } from "../data"
 import { WhatsAppRegisterModal } from "./WhatsAppRegisterModal"
 
 const links = [
@@ -144,7 +144,10 @@ export function Layout() {
               Quick links
             </h3>
             <ul className="space-y-2">
-              {[...links, { to: "/register", label: "Register" }].map((l) => (
+              {[
+  ...links,
+  ...(REGISTRATION_OPEN ? [{ to: "/register", label: "Register" }] : []),
+].map((l) => (
                 <li key={l.to}>
                   <Link className="hover:text-gus-yellow" to={l.to}>
                     {l.label}
